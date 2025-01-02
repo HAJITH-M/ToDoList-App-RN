@@ -3,16 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import { Task } from "../../Home/ToDoHomePageVM";
 
 
-interface Task {
-    id: number;
-    title: string;
-    description: string;
-    completed: boolean;
-  }
 
-const ProfilePage = () => {
+const ProfilePage = (props: Task) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [userEmail, setUserEmail] = useState('');
   const [isLoading, setIsLoading] = useState(true);

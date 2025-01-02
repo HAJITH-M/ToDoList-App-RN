@@ -7,8 +7,6 @@ import ToDoHomePageVM from './ToDoHomePageVM';
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SvgXml } from 'react-native-svg';
-import { vector } from '../../assets/Vectors';
 import { SimpleLineIcons } from '@expo/vector-icons';
 // npm install react-native-svg
 
@@ -144,7 +142,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
                   {incompleteTasks.map((task) => (
                     <View key={task.id} style={styles.taskCard}>
                       <TouchableOpacity style={styles.actionButton} onPress={() => toggleTaskCompletion(task.id, task.completed)}>
-                        <MaterialIcons name="radio-button-unchecked" size={24} color="#34C759" />
+                        <MaterialIcons name="radio-button-unchecked" size={24} color="#fff" />
                       </TouchableOpacity>
                       <View style={styles.taskContent}>
                         <Text style={styles.taskTitle}>{task.title}</Text>
@@ -161,7 +159,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
                   {completedTasks.map((task) => (
                     <View key={task.id} style={[styles.taskCard, { opacity: 0.7 }]}>
                       <TouchableOpacity style={styles.actionButton} onPress={() => toggleTaskCompletion(task.id, task.completed)}>
-                        <MaterialIcons name="radio-button-checked" size={24} color="#34C759" />
+                        <MaterialIcons name="radio-button-checked" size={24} color="#fff" />
                       </TouchableOpacity>
                       <View style={styles.taskContent}>
                         <Text style={[styles.taskTitle, { textDecorationLine: 'line-through' }]}>{task.title}</Text>
@@ -174,6 +172,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
             </View>
           )}
         </ScrollView>
+
         <Modal
           animationType="slide"
           transparent={true}
@@ -278,4 +277,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
   searchContainer: {flexDirection: 'row',alignItems: 'center',backgroundColor: '#1a1a1a',borderRadius: 10,paddingHorizontal: 15,marginBottom: 20,height: 45,},
   searchIcon: {marginRight: 10,},
   searchInput: {flex: 1,color: '#fff',fontSize: 16,height: '100%',},
-});export default HomePage;
+});
+
+
+export default HomePage;

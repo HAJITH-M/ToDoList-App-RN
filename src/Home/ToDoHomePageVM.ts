@@ -155,6 +155,38 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
                 props.navigation.navigate('profile');
               };
               
+
+
+
+              const toggleTaskCompletion = async (id: number, completed: boolean) => {
+                try {
+                  const token = await SecureStore.getItemAsync('userToken');
+                  if (!token) return;
+                
+                  const task = tasks.find(t => t.id === id);
+                  if (!task) return;
+          
+                  await axios.put(`${apiurl}/todos/${id}`, 
+                    {
+                      title: task.title,
+                      description: task.description,
+                      completed: !completed
+                    },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${token}`
+                      }
+                    }
+                  );
+                
+                  const updatedTasks = tasks.map(task => 
+                    task.id === id ? { ...task, completed: !completed } : task
+                  );
+                  setTasks(updatedTasks);
+                } catch (error) {
+                  console.error('Error updating task:', error);
+                }
+              };
       
   return {
         checkTokenExpiry,
@@ -178,7 +210,9 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
         isLoading,
         setIsLoading,
         loadTasks,
-        handleProfileNavigation
+        handleProfileNavigation,
+        toggleTaskCompletion
+
   }
 }
 
