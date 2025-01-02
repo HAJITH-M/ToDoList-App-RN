@@ -3,13 +3,14 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from './typesRootNavigation';
 import { NavigationContainer } from '@react-navigation/native';
-import SplashScreen from '../../src/Screens/SplashScreen/SplashScreen';
-import CarouselScreen from '../../src/Screens/CarouselScreens/CarouselScreen';
-import Login from '../../src/Pages/Login/Login';
+import SplashScreen from '../Pages/SplashScreen/SplashScreen';
+import CarouselScreen from '../Pages/CarouselScreens/CarouselScreen';
+import Login from '../Pages/Login/LoginView';
 import SignUp from '../../src/Pages/SignUp/SignUp';
-import HomePage from '../../src/Home/ToDoHomePage';
+import HomePage from '../Home/ToDoHomePageView';
 
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
+import ProfilePage from '../Pages/ProfilePage/ProfilePageView';
 
 // Configure Reanimated logger at the app root level
 configureReanimatedLogger({
@@ -31,6 +32,7 @@ const RootNavigation = () => {
             <Stack.Screen name="login" component={Login} options={{headerShown: false}} /> 
             <Stack.Screen name="signup" component={SignUp} options={{headerShown: false}} />
             <Stack.Screen name="homepage" component={HomePage} options={{headerShown: false}} />
+            <Stack.Screen name="profile" component={ProfilePage} options={{headerShown: false}} />
         </Stack.Navigator>
     </NavigationContainer>
     </>

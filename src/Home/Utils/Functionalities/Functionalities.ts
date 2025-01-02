@@ -5,12 +5,6 @@ import * as SecureStore from 'expo-secure-store';
 
 const Functionalities = () => {
 
-
-    type User = {
-        email: string,
-        password: string;
-    };
-
     interface Task {
         title: string;
         description: string;
@@ -18,8 +12,6 @@ const Functionalities = () => {
       }
 
     const apiurl = "https://rntodoapi.vercel.app"
-
- 
 
 
     const handleaddtask = async (title: string, description: string) => {

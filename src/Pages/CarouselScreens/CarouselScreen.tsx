@@ -2,15 +2,15 @@ import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-nati
 import { useCallback, useRef, useState } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
 import { CarouselScreenProps } from './CarouselScreenProp';
-import CarouselScreenComponentView from '../../Pages/Components/CarouselScreenComponent/CarouselScreenComponentView';
+import CarouselScreenComponentView from '../Components/CarouselScreenComponent/CarouselScreenComponentView';
 import images from '../../../assets/assets';
-import { useCarouselScreenVM } from './CarouselScreenVM';
+import { CarouselScreenVM } from './CarouselScreenVM';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const CarouselScreen =(props: CarouselScreenProps) => {
   
-  const carouselScreenVM =  useCarouselScreenVM(props);
+  const carouselScreenVM =  CarouselScreenVM(props);
 
 
 
