@@ -1,0 +1,84 @@
+ **1. `checkTokenExpiry(props: ToDoHomePageProps)`**
+
+ Functionality:
+1. Retrieve the `userToken` from `SecureStore` using `SecureStore.getItemAsync('userToken')`.
+2. If the token is not found:
+   - Navigate to the **Login** screen using `props.navigation.navigate('login')`.
+
+ Important:
+- Verifies if the authentication token exists and redirects to the login screen if it doesn’t.
+
+---
+
+ **2. `getUserEmail()`**
+
+ Functionality:
+1. Retrieve the `userEmail` from `SecureStore` using `SecureStore.getItemAsync('userEmail')`.
+2. If an email is found:
+   - Extract the portion before `@` and set it to the `userEmail` state using `setUserEmail`.
+
+ Important:
+- Retrieves and processes the user email for display.
+
+---
+
+ **3. `fetchTasks()`**
+
+ Functionality:
+1. Set the loading state to `true` using `setIsLoading(true)`.
+2. Retrieve the `userToken` from `SecureStore` using `SecureStore.getItemAsync('userToken')`.
+   - If no token is found:
+     - Set the `error` state to `'No authentication token found'` and exit.
+3. Make a GET request to the `/todos` endpoint using `axios.get` with the `Authorization` header containing the token.
+4. On success:
+   - Update the `tasks` state with the response data using `setTasks`.
+5. On error:
+   - Log the error and update the `error` state with `'Failed to load tasks. Please try again.'`.
+6. In the `finally` block:
+   - Set the loading state to `false` using `setIsLoading(false)`.
+
+ Important:
+- Securely fetches tasks from the API and handles errors gracefully.
+
+---
+
+ **4. `toggleTaskCompletion(id: number, completed: boolean)`**
+
+ Functionality:
+1. Retrieve the `userToken` from `SecureStore` using `SecureStore.getItemAsync('userToken')`.
+   - Exit if no token is found.
+2. Find the task in the `tasks` state using `tasks.find(t => t.id === id)`.
+   - Exit if no task is found.
+3. Make a PUT request to the `/todos/:id` endpoint using `axios.put` to toggle the `completed` status of the task.
+4. Update the `tasks` state by mapping through the existing tasks and updating the `completed` property of the task with the matching `id`.
+
+ Important:
+- Updates the task's completion status and ensures state consistency after the API call.
+
+---
+
+ **5. `handleAddTask(title: string, description: string)`**
+
+ Functionality:
+1. Check if the `title` is non-empty after trimming. Exit if it is empty.
+2. Retrieve the `userToken` from `SecureStore` using `SecureStore.getItemAsync('userToken')`.
+   - Exit if no token is found.
+3. Make a POST request to the `/todos` endpoint using `axios.post` with the task `title`, `description`, and `completed` set to `false`.
+4. On success:
+   - Clear the `taskTitle` and `taskDescription` states.
+   - Close the task creation modal by setting `setModalVisible(false)`.
+   - Refresh the tasks by invoking `fetchTasks()`.
+
+ Important:
+- Adds a new task to the list and refreshes the task state.
+
+---
+
+ **6. `filteredTasks`**
+
+ Functionality:
+1. Filters the `tasks` state by matching the `title` (and optionally the `description`) of each task with the `searchQuery`.
+2. Performs a case-insensitive comparison using `toLowerCase()`.
+
+ Important:
+- Provides a filtered list of tasks based on the search query.
