@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { Task } from "../../Home/ToDoHomePageVM";
+import { Task } from "./ProfilePageProps";
+import { useNavigation } from "@react-navigation/native";
 
-
-
-const ProfilePage = (props: Task) => {
+const ProfilePage = (props: any) => {
+  const navigation = useNavigation();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [userEmail, setUserEmail] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     const getUserEmail = async () => {
@@ -41,6 +42,16 @@ const ProfilePage = (props: Task) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleLogout = async () => {
+    await SecureStore.deleteItemAsync('userToken');
+    await SecureStore.deleteItemAsync('userEmail');
+    props.navigation.navigate('login');
+  };
+
+  const handleDismiss = () => {
+    setShowLogoutModal(false);
   };
 
   const incompleteTasks = tasks.filter(task => !task.completed);
@@ -100,8 +111,37 @@ const ProfilePage = (props: Task) => {
             </View>
             <MaterialIcons name="chevron-right" size={24} color="#FFFFFF" />
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.settingsItem} onPress={() => setShowLogoutModal(true)}>
+            <View style={styles.settingsLeft}>
+              <MaterialIcons name="logout" size={24} color="#FF3B30" />
+              <Text style={[styles.settingsText, { color: '#FF3B30' }]}>Logout</Text>
+            </View>
+            <MaterialIcons name="chevron-right" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
         </View>
       </View>
+
+      <Modal
+        visible={showLogoutModal}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Logout</Text>
+            <Text style={styles.modalText}>Are you sure you want to logout?</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={[styles.modalButton, styles.cancelButton]} onPress={handleDismiss}>
+                <Text style={styles.buttonText}>No</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.modalButton, styles.logoutButton]} onPress={handleLogout}>
+                <Text style={styles.buttonText}>Yes</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -186,7 +226,54 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     marginLeft: 15,
-  }
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#2C2C2E',
+    borderRadius: 20,
+    padding: 20,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+  modalButton: {
+    padding: 12,
+    borderRadius: 10,
+    width: '45%',
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#3A3A3C',
+  },
+  logoutButton: {
+    backgroundColor: '#FF3B30',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default ProfilePage;

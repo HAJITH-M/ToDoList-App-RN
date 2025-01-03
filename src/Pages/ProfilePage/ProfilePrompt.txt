@@ -1,0 +1,50 @@
+### **1. `getUserEmail()`**
+
+#### Functionality:
+1. Retrieve the `userEmail` from `SecureStore` using `SecureStore.getItemAsync('userEmail')`.
+2. If an email is found:
+   - Extract the portion before `@` and set it to the `userEmail` state using `setUserEmail`.
+
+#### Important:
+- Retrieves and processes the user email for display.
+
+---
+
+### **2. `fetchTasks()`**
+
+#### Functionality:
+1. Retrieve the `userToken` from `SecureStore` using `SecureStore.getItemAsync('userToken')`.
+   - Exit the function if no token is found.
+2. Make a GET request to the `/todos` endpoint using `axios.get` with the `Authorization` header containing the token.
+3. On success:
+   - Update the `tasks` state with the response data using `setTasks`.
+4. On error:
+   - Log the error to the console.
+5. In the `finally` block:
+   - Set the `isLoading` state to `false`.
+
+#### Important:
+- Fetches the list of tasks securely using the token.
+
+---
+
+### **3. `handleLogout()`**
+
+#### Functionality:
+1. Delete the `userToken` from `SecureStore` using `SecureStore.deleteItemAsync('userToken')`.
+2. Delete the `userEmail` from `SecureStore` using `SecureStore.deleteItemAsync('userEmail')`.
+3. Navigate to the **Login** screen using `props.navigation.navigate('login')`.
+
+#### Important:
+- Clears user session data and navigates to the login screen.
+
+---
+
+### **4. `handleDismiss()`**
+
+#### Functionality:
+1. Set the `showLogoutModal` state to `false` using `setShowLogoutModal(false)`.
+
+#### Important:
+- Dismisses the logout modal when invoked.
+
