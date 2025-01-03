@@ -21,7 +21,7 @@ const Login = (props: LoginProps) => {
           <ToastComponentView
             message="Invalid User"
             type="error"
-            duration={3000}
+            duration={3000} 
             position="bottom"
             showIcon={true}
             onClose={() => loginVM.setShowToast(false)}

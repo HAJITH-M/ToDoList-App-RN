@@ -32,12 +32,24 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
 
   const checkTokenExpiry = async (props: ToDoHomePageProps) => {
     const token = await SecureStore.getItemAsync('userToken');
-    if (!token) {
+    const tokenExpiry = await SecureStore.getItemAsync('tokenExpiry');
+    
+    if (!token || !tokenExpiry) {
+      props.navigation.navigate('login');
+      return;
+    }
+
+    const currentTime = new Date().getTime();
+    const expiryTime = parseInt(tokenExpiry);
+
+    if (currentTime > expiryTime) {
+      await SecureStore.deleteItemAsync('userToken');
+      await SecureStore.deleteItemAsync('tokenExpiry');
       props.navigation.navigate('login');
       return;
     }
   };
-
+  
   const getUserEmail = async () => {
     const email = await SecureStore.getItemAsync('userEmail');
     if (email) {

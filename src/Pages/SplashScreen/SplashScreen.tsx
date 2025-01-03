@@ -4,6 +4,7 @@ import { SplashScreenProps } from './SplashScreenProps';
 import images from '../../../assets/assets';
 import SplashScreenVM from './SplashScreenVM';
 import { SplashScreenStyles } from './SplashScreenStyles';
+import * as SecureStore from 'expo-secure-store';
 
 const SplashScreen = (props: SplashScreenProps) => {
   const splashScreenVM = SplashScreenVM(props);
@@ -11,7 +12,17 @@ const SplashScreen = (props: SplashScreenProps) => {
   useEffect(() => {
     setTimeout(() => {
       console.log("Splash Screen");
-      splashScreenVM.splashHandle();
+      // splashScreenVM.splashHandle();
+       const Token = SecureStore.getItemAsync('Token')
+          
+               
+                  if(!Token){
+                      props.navigation.replace('carouselscreen')
+                    }
+                    else{
+                      props.navigation.replace('homepage')
+                    }
+                  
       // props.navigation.replace('carouselscreen')
     }, 5000);
   }, [])

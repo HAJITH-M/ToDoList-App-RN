@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, TextInput } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ToDoHomePageProps } from './ToDoHomePageProps';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import images from '../../assets/assets';
@@ -8,7 +8,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
 const HomePage = (props: ToDoHomePageProps) => {
+
+
   const vm = ToDoHomePageVM(props);
+
 
   return (
     <View style={styles.container}>
@@ -98,7 +101,7 @@ const HomePage = (props: ToDoHomePageProps) => {
               onBlur={() => vm.setTaskTitleFocused(false)}
             />
             <TextInput
-              style={[styles.input, styles.descriptionInput, vm.isTaskDescriptionFocused && styles.focusedInput]}
+              style={[styles.input, styles.descriptionInput && styles.focusedInput]}
               placeholder="Task Description"
               placeholderTextColor="#666"
               value={vm.taskDescription}

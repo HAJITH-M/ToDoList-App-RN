@@ -21,7 +21,7 @@ const LoginVM = (props: LoginProps ) => {
       } else if (key === 'password') {
         validatePassword(value);
       }
-    };
+    }; 
 
     const validateEmail = (email: string) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -66,7 +66,6 @@ const LoginVM = (props: LoginProps ) => {
         // Set token expiry time (15 minutes from now)
         const expiryTime = new Date().getTime() + (15 * 60 * 1000)
         await SecureStore.setItemAsync('tokenExpiry', expiryTime.toString())
-
         await SecureStore.setItemAsync('userEmail', email)
        
         console.log(response.data)

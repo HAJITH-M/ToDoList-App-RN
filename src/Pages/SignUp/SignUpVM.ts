@@ -60,13 +60,13 @@ const SignUpVM = (props: SignUpProps) => {
       });
 
       const token = response.data.token;
-      await SecureStore.setItemAsync('userToken', token);
+      // await SecureStore.setItemAsync('userToken', token);
 
       // Set token expiry time (15 minutes from now)
       const expiryTime = new Date().getTime() + (15 * 60 * 1000);
       await SecureStore.setItemAsync('tokenExpiry', expiryTime.toString());
 
-      await SecureStore.setItemAsync('userEmail', email);
+      // await SecureStore.setItemAsync('userEmail', email);
 
       console.log(response.data);
       props.navigation.navigate("login");
