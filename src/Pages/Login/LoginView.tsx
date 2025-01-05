@@ -10,9 +10,16 @@ import LoginStyles from './LoginStyles'
 const Login = (props: LoginProps) => {
 
   const loginVM = LoginVM(props)
+  const [isEmailFocused, setIsEmailFocused] = useState(false)
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false)
+  const [showErrors, setShowErrors] = useState(false)
 
   return (
-    <View style={LoginStyles.container}>
+
+    <View style={LoginStyles.container} onTouchStart={() => {
+      setIsEmailFocused(false)
+      setIsPasswordFocused(false)
+    }}>
       <View style={LoginStyles.contentContainer}>
         <Text style={LoginStyles.title}>Login here</Text>
         <Text style={LoginStyles.description}>Welcome back you've been missed!</Text>
@@ -31,28 +38,55 @@ const Login = (props: LoginProps) => {
         <View style={{width: '100%', marginBottom: 10}}>
 
         <TextInput
-          style={[LoginStyles.input, loginVM.emailError ? {borderColor: 'red'} : null]}
+          style={[
+            LoginStyles.input, 
+            isEmailFocused ? {borderColor: '#0000FF'} : {borderColor: 'gray'},
+
+            showErrors && loginVM.emailError && {borderColor: 'red'}
+          ]}
           placeholder="Email"
           placeholderTextColor="#666"
           keyboardType="email-address"
           autoCapitalize="none"
           onChangeText={(text) => loginVM.handleFormChange('email', text)}
           value={loginVM.form.email}
+
+          onFocus={(e) => {
+            e.stopPropagation()
+            setIsEmailFocused(true)
+            setIsPasswordFocused(false)
+          }}
+          onBlur={() => setIsEmailFocused(false)}
         />
-        {loginVM.emailError && <Text style={{color: 'red', fontSize: 12, flex:0, textAlign: 'left'}}>{loginVM.emailError}</Text>}
+
+        {showErrors && loginVM.emailError && <Text style={{color: 'red', fontSize: 12, flex:0, textAlign: 'left'}}>{loginVM.emailError}</Text>}
         
         </View>
 
         <View style={{width: '100%'}}>
         <TextInput
-          style={[LoginStyles.input, loginVM.passwordError ? {borderColor: 'red'} : null]}
+          style={[
+            LoginStyles.input,
+            isPasswordFocused ? {borderColor: '#0000FF'} : {borderColor: 'gray'},
+
+            showErrors && loginVM.passwordError && {borderColor: 'red'}
+          ]}
           placeholder="Password"
           placeholderTextColor="#666"
           secureTextEntry
           onChangeText={(text) => loginVM.handleFormChange('password', text)}
           value={loginVM.form.password}
+
+          onFocus={(e) => {
+            e.stopPropagation()
+            setIsPasswordFocused(true)
+            setIsEmailFocused(false)
+            setShowErrors(true)
+          }}
+          onBlur={() => setIsPasswordFocused(false)}
         />
-        {loginVM.passwordError && <Text style={{color: 'red', fontSize: 10}}>{loginVM.passwordError}</Text>}
+
+        {showErrors && loginVM.passwordError && <Text style={{color: 'red', fontSize: 10}}>{loginVM.passwordError}</Text>}
         
         </View>
         <View style={LoginStyles.forgotPasswordContainer}>

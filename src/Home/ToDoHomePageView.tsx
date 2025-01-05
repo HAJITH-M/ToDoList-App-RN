@@ -56,6 +56,18 @@ const HomePage = (props: ToDoHomePageProps) => {
                     <View style={styles.taskContent}>
                       <Text style={styles.taskTitle}>{task.title}</Text>
                       <Text style={styles.taskDescription}>{task.description}</Text>
+
+                                        <Text style={styles.taskDescription}>
+                                          {new Date(task.createdAt).toDateString() === new Date().toDateString()
+                                            ? `Today at ${new Date(task.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                                            : new Date(task.createdAt).toLocaleString([], { 
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                              })}
+                                        </Text>
                     </View>
                   </View>
                 ))}

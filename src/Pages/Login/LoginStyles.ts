@@ -23,7 +23,7 @@ const LoginStyles = StyleSheet.create({
       color: '#888',
       marginBottom: 30,
       textAlign: 'center',
-      paddingHorizontal: 90,
+      paddingHorizontal: 20,
     },
     input: {
       width: '100%',

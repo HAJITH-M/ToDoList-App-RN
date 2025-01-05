@@ -116,10 +116,10 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
       if (!title.trim()) return;
 
       const token = await SecureStore.getItemAsync('userToken');
+      
       if (!token) return;
 
-      await axios.post(
-        `${apiurl}/todos`,
+      await axios.post(`${apiurl}/todos`,
         {
           title: title.trim(),
           description: description.trim(),

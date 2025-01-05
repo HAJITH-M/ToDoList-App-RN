@@ -21,6 +21,8 @@ export const ToastComponentView = (props: ToastComponentProps) => {
         }
       ]}
     >
+
+    
       <View style={[styles.toast, { backgroundColor: toastComponentVM.colors[props.type] }]}>
         {props.showIcon && (
           <Icon 

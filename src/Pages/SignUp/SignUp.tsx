@@ -7,9 +7,14 @@ import { ToastComponentView } from '../Components/ToastComponent/ToastComponentV
 
 const SignUp = (props: SignUpProps) => {
   const signUpVM = SignUpVM(props)
+  const [isEmailFocused, setIsEmailFocused] = useState(false)
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false)
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onTouchStart={() => {
+      setIsEmailFocused(false)
+      setIsPasswordFocused(false)
+    }}>
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Create Account</Text>
         <Text style={styles.description}>Create an account so you can explore all the existing jobs</Text>
@@ -27,37 +32,57 @@ const SignUp = (props: SignUpProps) => {
         
         <View style={{width: '100%', marginBottom: 10}}>
           <TextInput
-            style={[styles.input, signUpVM.emailError ? {borderColor: 'red'} : null]}
+            style={[
+              styles.input,
+              isEmailFocused ? {borderColor: '#0000FF'} : {borderColor: 'gray'},
+              signUpVM.emailError && {borderColor: 'red'}
+            ]}
             placeholder="Email"
             placeholderTextColor="#666"
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={(text) => signUpVM.handleFormChange('email', text)}
             value={signUpVM.form.email}
+            onFocus={(e) => {
+              e.stopPropagation()
+              setIsEmailFocused(true)
+              setIsPasswordFocused(false)
+            }}
+            onBlur={() => setIsEmailFocused(false)}
           />
           {signUpVM.emailError && <Text style={{color: 'red', fontSize: 12, flex:0, textAlign: 'left'}}>{signUpVM.emailError}</Text>}
         </View>
         
         <View style={{width: '100%'}}>
           <TextInput
-            style={[styles.input, signUpVM.passwordError ? {borderColor: 'red'} : null]}
+            style={[
+              styles.input,
+              isPasswordFocused ? {borderColor: '#0000FF'} : {borderColor: 'gray'},
+              signUpVM.passwordError && {borderColor: 'red'}
+            ]}
             placeholder="Password"
             placeholderTextColor="#666"
             secureTextEntry
             onChangeText={(text) => signUpVM.handleFormChange('password', text)}
             value={signUpVM.form.password}
+            onFocus={(e) => {
+              e.stopPropagation()
+              setIsPasswordFocused(true)
+              setIsEmailFocused(false)
+            }}
+            onBlur={() => setIsPasswordFocused(false)}
           />
           {signUpVM.passwordError && <Text style={{color: 'red', fontSize: 10}}>{signUpVM.passwordError}</Text>}
         </View>
         
-        <View style={styles.forgotPasswordContainer}>
+        {/* <View style={styles.forgotPasswordContainer}>
           <TouchableOpacity>
             <Text style={styles.forgotPassword}>Forgot Password?</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         
         <TouchableOpacity 
-          style={styles.signInButton}
+          style={[styles.signInButton,{marginTop: 10}]}
           onPress={() => signUpVM.HandleSignUp(signUpVM.form.email, signUpVM.form.password)}
           disabled={!signUpVM.isFormValid()}
         >
@@ -126,6 +151,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingHorizontal: 15,
     color: 'white',
+    borderWidth: 1,
   },
   forgotPasswordContainer: {
     width: '100%',

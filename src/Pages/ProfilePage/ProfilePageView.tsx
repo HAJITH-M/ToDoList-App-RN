@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 10,
   },
   imageContainer: {
     width: 120,
@@ -162,13 +162,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#2C2C2E',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   username: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   statsContainer: {
     flexDirection: 'row',
@@ -200,14 +200,14 @@ const styles = StyleSheet.create({
   },
   settingsContainer: {
     width: '80%',
-    marginTop: 20,
+    marginTop: 5,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 15,
-    marginTop: 20,
+    marginTop: 5,
   },
   settingsItem: {
     flexDirection: 'row',
