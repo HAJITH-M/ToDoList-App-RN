@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, TextInput } from 'react-native';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ToDoHomePageProps } from './ToDoHomePageProps';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import images from '../../assets/assets';
@@ -9,9 +9,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 
 const HomePage = (props: ToDoHomePageProps) => {
 
-
   const vm = ToDoHomePageVM(props);
-
 
   return (
     <View style={styles.container}>
@@ -56,7 +54,6 @@ const HomePage = (props: ToDoHomePageProps) => {
                     <View style={styles.taskContent}>
                       <Text style={styles.taskTitle}>{task.title}</Text>
                       <Text style={styles.taskDescription}>{task.description}</Text>
-
                                         <Text style={styles.taskDescription}>
                                           {new Date(task.createdAt).toDateString() === new Date().toDateString()
                                             ? `Today at ${new Date(task.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
@@ -140,10 +137,7 @@ const HomePage = (props: ToDoHomePageProps) => {
         </View>
       </Modal>
 
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => vm.setModalVisible(true)}
-      >
+      <TouchableOpacity style={styles.addButton} onPress={() => vm.setModalVisible(true)}>
         <MaterialIcons name="add" size={30} color="#fff" />
       </TouchableOpacity>
     </View>

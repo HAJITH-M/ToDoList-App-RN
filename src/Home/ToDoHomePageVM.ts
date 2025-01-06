@@ -3,13 +3,6 @@ import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import { Task, ToDoHomePageProps } from './ToDoHomePageProps';
 
-// interface Task {
-//   id: number;
-//   title: string;
-//   description: string;
-//   completed: boolean;
-// }
-
 const ToDoHomePageVM = (props: ToDoHomePageProps) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [taskTitle, setTaskTitle] = useState('');
@@ -19,8 +12,9 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
   const [error, setError] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
 
   const apiurl = "https://rntodoapi.vercel.app";
 
@@ -29,6 +23,17 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
     getUserEmail();
     fetchTasks();
   }, []);
+
+  useEffect(() => {
+    if (searchQuery === '') {
+      fetchTasks(); // Fetch all tasks when search query is empty
+    } else {
+      // Filter tasks based on the search query
+      setFilteredTasks(tasks.filter(task => 
+        task.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
+    }
+  }, [searchQuery]);
 
   const checkTokenExpiry = async (props: ToDoHomePageProps) => {
     const token = await SecureStore.getItemAsync('userToken');
@@ -66,13 +71,15 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
         return;
       }
       
-      const response = await axios.get(`${apiurl}/todos`, {
+
+      const response = await axios.get(`${apiurl}/todos?searchTerm=${searchQuery}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       
       setTasks(response.data);
+      setFilteredTasks(response.data);
     } catch (error) {
       console.error('Error loading tasks:', error);
       setError('Failed to load tasks. Please try again.');
@@ -106,6 +113,9 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
         task.id === id ? { ...task, completed: !completed } : task
       );
       setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks.filter(task => 
+        task.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
     } catch (error) {
       console.error('Error updating task:', error);
     }
@@ -141,12 +151,6 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
     }
   };
 
-  const filteredTasks = tasks.filter(task => 
-    task.title.toLowerCase().includes(searchQuery.toLowerCase()) 
-    // ||
-    // task.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const incompleteTasks = filteredTasks.filter(task => !task.completed);
   const completedTasks = filteredTasks.filter(task => task.completed);
 
@@ -176,5 +180,6 @@ const ToDoHomePageVM = (props: ToDoHomePageProps) => {
     filteredTasks
   };
 };
+
 
 export default ToDoHomePageVM;
